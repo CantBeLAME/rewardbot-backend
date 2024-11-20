@@ -10,6 +10,7 @@ router.post('/user', async (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
+      canvasToken: req.body.canvasToken,
       role: 'user',
       data: [],
     });

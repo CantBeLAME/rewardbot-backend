@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
   secure: process.env.NODE_ENV === 'production', 
   sameSite: 'lax', 
 });
-res.json({ message: 'Login successful!', refreshToken });
+res.json({ message: 'Login successful!', refreshToken, user });
 });
 
 router.get('/protected', async (req, res) => {
