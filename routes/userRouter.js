@@ -9,9 +9,9 @@ router.post('/user', async (req, res) => {
 			username: req.body.username,
 			email: req.body.email,
 			password: req.body.password,
-			canvasToken: req.body.canvasToken,
-			role: 'user',
-			data: [],
+			canvasToken: req.body.canvasToken ?? '',
+			option: req.body.option ?? 'Week',
+			showCompleted: req.body.showCompleted ?? true,
 			createAt: Date.now(),
 		});
 		console.log(newItem);
