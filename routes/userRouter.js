@@ -45,6 +45,7 @@ router.get('/user/:id', async (req, res) => {
 	}
 });
 
+
 // Get a user by email
 router.get('/user/email/:email', async (req, res) => {
 	try {
@@ -55,5 +56,37 @@ router.get('/user/email/:email', async (req, res) => {
 		res.status(500).send('Error occurred while fetching user by email');
 	}
 });
+
+router.patch('/user/:id/option', async (req, res) => {
+	try {
+		const item = await userSchema.findById(req.params.id);
+		if (!item) {
+			return res.status(404).send('Item not found');
+		}
+		item.option = req.body.option;
+		await item.save();
+		res.json(item);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Error occurred while fetching user by ID');
+	}
+});
+
+
+router.patch('/user/:id/showCompleted', async (req, res) => {
+	try {
+		const item = await userSchema.findById(req.params.id);
+		if (!item) {
+			return res.status(404).send('Item not found');
+		}
+		item.showCompleted = req.body.showCompleted;
+		await item.save();
+		res.json(item);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Error occurred while fetching user by ID');
+	}
+});
+
 
 module.exports = router;

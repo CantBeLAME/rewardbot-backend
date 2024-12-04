@@ -8,9 +8,9 @@ const userSchema = new mongoose.Schema(
 		email: String,
 		password: String,
 		canvasToken: String,
-		option: String,
-		showCompleted: Boolean,
-		createAt: Date,
+		option: { type: String, default: 'Week' },
+		showCompleted: { type: Boolean, default: true },
+		createAt: { type: Date, default: Date.now },
 	},
 	{ versionKey: false },
 );
