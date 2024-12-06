@@ -6,11 +6,20 @@ const cors = require('cors');
 const userRouter = require('./routes/userRouter');
 const tokenRouter = require('./routes/tokenRouter');
 
-const corsOptions = {
-	origin: process.env.FRONT_END_URL, // Frontend URL
-	credentials: true, // Allow cookies and credentials
-};
+console.log(
+	'NODE_ENV:',
+	process.env.NODE_ENV === 'production'
+		? process.env.FRONT_END_URL
+		: 'http://localhost:3000',
+);
 
+const corsOptions = {
+	origin:
+		process.env.NODE_ENV === 'production'
+			? process.env.FRONT_END_URL
+			: 'http://localhost:3000',
+	credentials: true,
+};
 // Create Express App
 const app = express();
 app.use(express.json());
@@ -18,14 +27,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors(corsOptions));
 
 // Encode credentials
-const username = encodeURIComponent(process.env.MONGODB_USERNAME);
-const password = encodeURIComponent(process.env.MONGODB_PASSWORD);
-const cluster = process.env.MONGODB_CLUSTER;
-const address = process.env.MONGODB_ADDRESS;
-const database = process.env.MONGODB_DATABASE;
+// Need to update temporary credentials
+const username = encodeURIComponent(process.env.MONGODB_USERNAME ?? 'app');
+const password = encodeURIComponent(process.env.MONGODB_PASSWORD ?? 'app');
+// console.log(username, password);
 
 // Build MongoDB URI
-const uri = `mongodb+srv://${username}:${password}@${cluster}/${database}?${address}`;
+const uri = `mongodb+srv://${username}:${password}@vt.ycdk5bw.mongodb.net/RewardBot?retryWrites=true&w=majority&appName=VT`;
 
 // Root route
 app.get('/', (req, res) => res.send('<h1>RewardBot BackEnd</h1>'));

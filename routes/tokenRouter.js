@@ -8,8 +8,9 @@ const userModel = require('../models/userModel');
 const router = express.Router();
 router.use(cookieParser());
 
-const SECRET = process.env.SECRET_KEY;
-const REFRESH_SECRET = process.env.REFRESH_SECRET_KEY;
+const SECRET = process.env.SECRET_KEY ?? 'reward-bot-secret-key';
+const REFRESH_SECRET =
+	process.env.REFRESH_SECRET_KEY ?? 'reward-bot-refresh-secret-key';
 
 // Validate user credentials
 const validateUser = async (email, password) => {
@@ -23,9 +24,9 @@ const validateUser = async (email, password) => {
 const useExistingToken = async (userId) => {
 	const token = await tokenModel.findOne({ userId: userId });
 
-  if (!token || token.expiresAt < new Date()) {
-    return null;
-  }
+	if (!token || token.expiresAt < new Date()) {
+		return null;
+	}
 
 	return token;
 };
@@ -36,27 +37,31 @@ router.post('/login', async (req, res) => {
 	const user = await validateUser(email, password);
 
 	if (!user) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+		return res.status(401).json({ message: 'Invalid credentials' });
 	}
 
-  const accessToken = jwt.sign(
-    { userId: user._id, email: user.email },
-    SECRET,
-    { expiresIn: '15m' },
-  );
+	const accessToken = jwt.sign(
+		{ userId: user._id, email: user.email },
+		SECRET,
+		{ expiresIn: '15m' },
+	);
 
-  const existingToken = await useExistingToken(user._id);
+	const existingToken = await useExistingToken(user._id);
 
-  if (existingToken) {
-    res.cookie('authToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-    });
+	if (existingToken) {
+		res.cookie('authToken', accessToken, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === 'production',
+			sameSite: 'lax',
+		});
 
-    res.json({ message: 'Login successful!', refreshToken: existingToken.token, user });
-    return;
-  }
+		res.json({
+			message: 'Login successful!',
+			refreshToken: existingToken.token,
+			user,
+		});
+		return;
+	}
 
 	const refreshToken = jwt.sign({ userId: user._id }, REFRESH_SECRET, {
 		expiresIn: '7d',
