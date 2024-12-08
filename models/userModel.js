@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
 		canvasToken: String,
 		option: { type: String, default: 'Week' },
 		showCompleted: { type: Boolean, default: true },
-		createAt: { type: Date, default: Date.now },
+		createdAt: { type: Date, default: Date.now },
 	},
 	{ versionKey: false },
 );

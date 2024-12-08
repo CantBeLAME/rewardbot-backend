@@ -12,7 +12,7 @@ router.post('/user', async (req, res) => {
 			canvasToken: req.body.canvasToken ?? '',
 			option: req.body.option ?? 'Week',
 			showCompleted: req.body.showCompleted ?? true,
-			createAt: Date.now(),
+			createdAt: Date.now(),
 		});
 		console.log(newItem);
 		await newItem.save();
