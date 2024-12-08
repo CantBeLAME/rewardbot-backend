@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
 	const existingToken = await useExistingToken(user._id);
 
 	if (existingToken) {
-		res.cookie('authToken', accessToken, {
+		res.cookie('rewardAuthToken', accessToken, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: 'lax',
@@ -75,7 +75,7 @@ router.post('/login', async (req, res) => {
 	});
 	await token.save();
 
-	res.cookie('authToken', accessToken, {
+	res.cookie('rewardAuthToken', accessToken, {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === 'production',
 		sameSite: 'lax',
@@ -84,7 +84,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/protected', async (req, res) => {
-	const token = req.cookies.authToken;
+	const token = req.cookies.rewardAuthToken;
 
 	if (!token) {
 		return res.status(401).json({ message: 'No token provided' });
@@ -150,7 +150,7 @@ router.post('/logout', async (req, res) => {
 		await tokenModel.deleteOne({ token: refreshToken });
 	}
 
-	res.clearCookie('authToken');
+	res.clearCookie('rewardAuthToken');
 	res.json({ message: 'Logged out successfully' });
 });
 
