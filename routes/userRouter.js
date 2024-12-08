@@ -14,7 +14,7 @@ router.post('/user', async (req, res) => {
 			showCompleted: req.body.showCompleted ?? true,
 			createdAt: Date.now(),
 		});
-		console.log(newItem);
+		// console.log(newItem);
 		await newItem.save();
 		res.status(201).json(newItem);
 	} catch (err) {
