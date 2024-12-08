@@ -72,6 +72,20 @@ router.patch('/user/:id/option', async (req, res) => {
 	}
 });
 
+router.patch('/user/:id/canvasOpiton', async (req, res) => {
+	try {
+		const item = await userSchema.findById(req.params.id);
+		if (!item) {
+			return res.status(404).send('Item not found');
+		}
+		item.option = req.body.canvasOption;
+		await item.save();
+		res.json(item);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Error occurred while fetching user by ID');
+	}
+});
 
 router.patch('/user/:id/showCompleted', async (req, res) => {
 	try {
