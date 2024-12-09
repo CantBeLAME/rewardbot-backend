@@ -56,6 +56,19 @@ router.put('/user/:id', async (req, res) => {
 		if (req.body.option !== undefined) item.option = req.body.option;
 		if (req.body.showCompleted !== undefined)
 			item.showCompleted = req.body.showCompleted;
+
+
+		item.completed = item.completed || [];
+		if (req.body.assignment_id !== undefined)
+			if (req.body.mark != undefined && req.body.mark == true) {
+				item.completed = [...item.completed, req.body.assignment_id];
+			}
+			else {
+				item.completed = item.completed.filter(
+					(id) => id !== req.body.assignment_id
+				);
+			}
+
 		await item.save();
 		res.json(item);
 	} catch (err) {

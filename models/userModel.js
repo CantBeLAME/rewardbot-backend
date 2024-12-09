@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
 		option: { type: String, default: 'Week' },
 		showCompleted: { type: Boolean, default: true },
 		createdAt: { type: Date, default: Date.now },
+		completed: { type: [String], default: [] },
 	},
 	{ versionKey: false },
 );
