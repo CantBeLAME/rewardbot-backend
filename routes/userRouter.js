@@ -13,6 +13,7 @@ router.post('/user', async (req, res) => {
 			option: req.body.option ?? 'Week',
 			showCompleted: req.body.showCompleted ?? true,
 			createdAt: Date.now(),
+			score: 100,
 		});
 		// console.log(newItem);
 		await newItem.save();
@@ -56,6 +57,8 @@ router.put('/user/:id', async (req, res) => {
 		if (req.body.option !== undefined) item.option = req.body.option;
 		if (req.body.showCompleted !== undefined)
 			item.showCompleted = req.body.showCompleted;
+		if (req.body.score !== undefined)
+			item.score = item.score - req.body.score;
 
 
 		item.completed = item.completed || [];

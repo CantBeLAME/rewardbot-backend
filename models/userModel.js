@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema(
 		showCompleted: { type: Boolean, default: true },
 		createdAt: { type: Date, default: Date.now },
 		completed: { type: [String], default: [] },
+		score: { type: Number, default: 100 },
 	},
 	{ versionKey: false },
 );
